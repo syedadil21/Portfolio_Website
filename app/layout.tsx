@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://syedadil21.vercel.app"),
   title: "Syed Adil — Full Stack Engineer",
   description:
     "Full-stack engineer with 3+ years of experience building production-grade web and mobile applications. Specializing in React, Next.js, TypeScript, Node.js, ASP.NET, and AI-powered systems.",
