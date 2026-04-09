@@ -31,8 +31,8 @@ export default function Navbar() {
       <div
         className={`transition-all duration-500 rounded-full px-8 py-3 flex items-center gap-8 ${
           scrolled
-            ? "bg-zinc-900/80 backdrop-blur-xl shadow-lg shadow-black/20 border border-white/5"
-            : "bg-zinc-900/40 backdrop-blur-md border border-white/5"
+            ? "bg-white/8 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] border border-white/15"
+            : "bg-white/5 backdrop-blur-xl border border-white/10"
         }`}
       >
         {/* Desktop links */}
@@ -79,7 +79,7 @@ export default function Navbar() {
         href="/Resume_SyedAdil.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        className="hidden lg:flex items-center gap-2 px-4 py-2 mt-0.5 rounded-full text-sm text-zinc-400 hover:text-white bg-zinc-900/40 backdrop-blur-md border border-white/5 hover:border-white/15 transition-all duration-300 whitespace-nowrap"
+        className="hidden lg:flex items-center gap-2 px-4 py-2 mt-0.5 rounded-full text-sm text-zinc-400 hover:text-white bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 whitespace-nowrap"
       >
         <svg
           width="14"
@@ -103,7 +103,7 @@ export default function Navbar() {
           menuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="bg-zinc-900/95 backdrop-blur-xl rounded-2xl border border-white/5 px-6 py-4 flex flex-col gap-4">
+        <div className="bg-white/5 backdrop-blur-2xl rounded-2xl border border-white/15 px-6 py-4 flex flex-col gap-4 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
           {links.map((link) => (
             <a
               key={link.name}
