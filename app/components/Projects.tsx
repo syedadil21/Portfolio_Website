@@ -23,17 +23,17 @@ const projects = [
       "TypeScript",
     ],
     github: "",
-    live: "",
+    live: "https://www.bonded.ai/",
   },
   {
     title: "OSINTify — OSINT Analysis Tool",
     caseStudy: "osintify",
     category: "AI" as Category,
     description:
-      "Final Year Project. Led the development of a MERN stack web app for automating Open-Source Intelligence (OSINT) analysis, generating actionable insights into digital footprints. Integrated multiple OSINT data sources including social media, public records, and forums for comprehensive threat identification and footprint analysis.",
+      "Final Year Project. Led the development of a MERN stack web app for automating Open-Source Intelligence (OSINT) analysis, generating actionable insights into digital footprints. Integrated multiple OSINT data sources including social media, public records, and forums for comprehensive threat identification and footprint analysis. (Demo: test1@gmail.com / test123)",
     tags: ["MongoDB", "Express.js", "React", "Node.js", "OSINT"],
-    github: "",
-    live: "",
+    github: "https://github.com/syedadil21/osintify",
+    live: "https://osintify.vercel.app/",
   },
   {
     title: "QuickBuy — Multi-Purveyor Grocery Platform",
@@ -52,7 +52,7 @@ const projects = [
       "GitHub Actions",
     ],
     github: "",
-    live: "",
+    live: "https://quickbuy-dashboard.netlify.app/",
   },
   {
     title: "FBTA — Learning Platform",
@@ -71,7 +71,7 @@ const projects = [
       "Docker",
     ],
     github: "",
-    live: "",
+    live: "https://fbta-academy.netlify.app/",
   },
   {
     title: "HARVEST — Grant Management Software",

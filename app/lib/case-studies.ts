@@ -212,7 +212,7 @@ export const caseStudies: CaseStudy[] = [
     category: "AI",
     stack: ["MongoDB", "Express.js", "React", "Node.js"],
     overview:
-      "Final Year Project. A MERN stack web application for automating Open-Source Intelligence (OSINT) analysis, generating actionable insights into digital footprints by aggregating data from multiple public sources.",
+      "Final Year Project. A MERN stack web application for automating Open-Source Intelligence (OSINT) analysis, generating actionable insights into digital footprints by aggregating data from multiple public sources. Try the live demo at osintify.vercel.app (Email: test1@gmail.com / Password: test123).",
     problem: [
       "OSINT analysis was a manual, time-consuming process requiring analysts to check multiple platforms and databases individually.",
       "Digital footprint data was scattered across social media, public records, and forums with no unified way to aggregate and correlate it.",
