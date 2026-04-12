@@ -25,6 +25,8 @@ import {
   SiRedux,
   SiOpenai,
   SiVercel,
+  SiShadcnui,
+  SiMui,
 } from "react-icons/si";
 import {
   TbBrain,
@@ -71,6 +73,8 @@ const skillGroups: { label: string; skills: Skill[] }[] = [
       { name: "Zod", icon: SiZod, color: "#3068B7" },
       { name: "GraphQL", icon: SiGraphql, color: "#E10098" },
       { name: "Zustand", icon: SiReact, color: "#453F39" },
+      { name: "shadcn/ui", icon: SiShadcnui, color: "#ffffff" },
+      { name: "Material UI", icon: SiMui, color: "#007FFF" },
     ],
   },
   {
