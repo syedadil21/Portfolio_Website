@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const links = [
   { name: "Home", href: "#home", external: false },
@@ -12,15 +13,67 @@ const links = [
   { name: "Contact", href: "#contact", external: false },
 ];
 
+// IDs of sections on the home page (order must match DOM order)
+const sectionIds = ["home", "about", "experience", "projects", "skills", "contact"];
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Track which section is currently in view — only on home page
+  useEffect(() => {
+    if (!isHome) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Find the entry with the greatest intersection ratio that's intersecting
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) {
+          setActiveSection(visible[0].target.id);
+        }
+      },
+      {
+        // Trigger when section is ~40% visible from the top
+        rootMargin: "-40% 0px -40% 0px",
+        threshold: 0,
+      }
+    );
+
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [isHome]);
+
+  const isLinkActive = (link: (typeof links)[number]) => {
+    if (link.external) {
+      return pathname.startsWith("/case-studies");
+    }
+    if (!isHome) return false;
+    return link.href === `#${activeSection}`;
+  };
+
+  // Rewrite hash links to "/#section" when not on the home page, so clicking
+  // them actually navigates home and scrolls to the section.
+  const resolveHref = (link: (typeof links)[number]) => {
+    if (link.external) return link.href;
+    if (isHome) return link.href;
+    return `/${link.href}`;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 flex items-start justify-between px-4 pt-4">
@@ -37,35 +90,50 @@ export default function Navbar() {
       >
         {/* Desktop links */}
         <div className="hidden lg:flex items-center gap-8">
-          {links.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={`text-sm transition-colors duration-200 whitespace-nowrap inline-flex items-center gap-1 ${
-                link.external
-                  ? "text-blue-300 hover:text-blue-200"
-                  : "text-zinc-400 hover:text-white"
-              }`}
-            >
-              {link.name}
-              {link.external && (
-                <svg
-                  width="11"
-                  height="11"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="opacity-70"
-                  aria-hidden="true"
-                >
-                  <path d="M7 17L17 7M17 7H7M17 7v10" />
-                </svg>
-              )}
-            </a>
-          ))}
+          {links.map((link) => {
+            const active = isLinkActive(link);
+            return (
+              <a
+                key={link.name}
+                href={resolveHref(link)}
+                className={`relative text-sm transition-colors duration-200 whitespace-nowrap inline-flex items-center gap-1 ${
+                  link.external
+                    ? active
+                      ? "text-blue-200"
+                      : "text-blue-300 hover:text-blue-200"
+                    : active
+                    ? "text-white"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                {link.name}
+                {link.external && (
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="opacity-70"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                )}
+                {active && (
+                  <span
+                    className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
+                      link.external ? "bg-blue-400" : "bg-white"
+                    }`}
+                    aria-hidden="true"
+                  />
+                )}
+              </a>
+            );
+          })}
         </div>
 
         {/* Mobile hamburger */}
@@ -124,36 +192,51 @@ export default function Navbar() {
         }`}
       >
         <div className="bg-white/5 backdrop-blur-2xl rounded-2xl border border-white/15 px-6 py-4 flex flex-col gap-4 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-          {links.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className={`transition-colors inline-flex items-center gap-1.5 ${
-                link.external
-                  ? "text-blue-300 hover:text-blue-200"
-                  : "text-zinc-400 hover:text-white"
-              }`}
-            >
-              {link.name}
-              {link.external && (
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="opacity-70"
-                  aria-hidden="true"
-                >
-                  <path d="M7 17L17 7M17 7H7M17 7v10" />
-                </svg>
-              )}
-            </a>
-          ))}
+          {links.map((link) => {
+            const active = isLinkActive(link);
+            return (
+              <a
+                key={link.name}
+                href={resolveHref(link)}
+                onClick={() => setMenuOpen(false)}
+                className={`transition-colors inline-flex items-center gap-1.5 ${
+                  link.external
+                    ? active
+                      ? "text-blue-200 font-semibold"
+                      : "text-blue-300 hover:text-blue-200"
+                    : active
+                    ? "text-white font-semibold"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                {active && (
+                  <span
+                    className={`w-1 h-1 rounded-full ${
+                      link.external ? "bg-blue-400" : "bg-white"
+                    }`}
+                    aria-hidden="true"
+                  />
+                )}
+                {link.name}
+                {link.external && (
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="opacity-70"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                )}
+              </a>
+            );
+          })}
         </div>
       </div>
     </nav>

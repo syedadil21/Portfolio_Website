@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ChatWidget from "./components/ChatWidget";
+import Navbar from "./components/Navbar";
+import GeometricBackground from "./components/GeometricBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -64,7 +66,16 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
-        {children}
+        {/* Geometric background behind entire site */}
+        <div className="fixed inset-0 z-0">
+          <GeometricBackground />
+        </div>
+
+        <div className="relative z-10 flex flex-col min-h-screen">
+          <Navbar />
+          {children}
+        </div>
+
         <ChatWidget />
       </body>
     </html>

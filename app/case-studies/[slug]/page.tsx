@@ -38,7 +38,7 @@ export default async function CaseStudyPage({
   if (!cs) notFound();
 
   return (
-    <div className="min-h-screen bg-[#050810]">
+    <div className="min-h-screen">
       {/* Header */}
       <div className="pt-32 pb-12 px-6">
         <div className="mx-auto max-w-3xl">

@@ -1,4 +1,3 @@
-import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Skills from "./components/Skills";
@@ -8,7 +7,6 @@ import Education from "./components/Education";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import LoadingScreen from "./components/LoadingScreen";
-import GeometricBackground from "./components/GeometricBackground";
 import FadeIn from "./components/FadeIn";
 
 export default function Home() {
@@ -16,40 +14,31 @@ export default function Home() {
     <>
       <LoadingScreen />
 
-      {/* Geometric background behind entire page */}
-      <div className="fixed inset-0 z-0">
-        <GeometricBackground />
-      </div>
+      <main>
+        <Hero />
 
-      <div className="relative z-10">
-        <Navbar />
+        <FadeIn>
+          <About />
+        </FadeIn>
 
-        <main>
-          <Hero />
+        <Experience />
 
-          <FadeIn>
-            <About />
-          </FadeIn>
+        <Projects />
 
-          <Experience />
+        <Skills />
 
-          <Projects />
+        <FadeIn>
+          <Education />
+        </FadeIn>
 
-          <Skills />
+        {/* <Certifications /> */}
 
-          <FadeIn>
-            <Education />
-          </FadeIn>
+        <FadeIn>
+          <Contact />
+        </FadeIn>
+      </main>
 
-          {/* <Certifications /> */}
-
-          <FadeIn>
-            <Contact />
-          </FadeIn>
-        </main>
-
-        <Footer />
-      </div>
+      <Footer />
     </>
   );
 }
