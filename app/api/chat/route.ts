@@ -61,12 +61,12 @@ Built a production-grade AI-powered analytics layer inside an orthodontic patien
 Stack: Next.js, GPT-4o, PostgreSQL, Vercel AI SDK, Prisma, Recharts, TanStack Query, TypeScript
 
 ### OSINTify — OSINT Analysis Tool (Final Year Project)
-Led the development of a MERN stack web app for automating Open-Source Intelligence (OSINT) analysis, generating actionable insights into digital footprints. Integrated multiple OSINT data sources including social media, public records, and forums.
-Stack: MongoDB, Express.js, React, Node.js
+Built a Next.js web app that aggregates data from 6 OSINT APIs (Dehashed, Blackbird, Hunter.io, Blockchain.info, AntiTor, SimInfo) into a unified search interface. Supports email, username, IP, phone, domain, and blockchain lookups with intelligent routing based on input type. Includes scan history and summary dashboard.
+Stack: Next.js, React, Supabase (PostgreSQL), Tailwind CSS, Node.js
 
 ### QuickBuy — Multi-Purveyor Grocery Platform
-Cross-platform grocery app with multi-cart checkout across multiple vendors. Built secure ASP.NET APIs with JWT auth and role-based access. Multi-tenant architecture using row-level data isolation. Next.js purveyor dashboard with TanStack Query.
-Stack: React Native (Expo), ASP.NET Core, Next.js, SQL Server, Entity Framework, JWT, Docker, GitHub Actions
+Cross-platform grocery app — React Native mobile with multi-vendor carts, cross-store price comparison, order lifecycle tracking, dual state management (Zustand + MobX-State-Tree), and i18n with RTL support. Multi-tenant ASP.NET backend with CompanyKey row-level isolation from JWT, GraphQL API (HotChocolate, 40+ types), SignalR real-time notifications with company-scoped channels, EF Core audit logging, condition-based promotions engine, inventory lot tracking with expiry management, Excel bulk import, and a Next.js purveyor dashboard with TanStack Query caching and reporting analytics.
+Stack: React Native (Expo), ASP.NET Core, Next.js, SQL Server, Entity Framework, GraphQL (HotChocolate), SignalR, JWT
 
 ### FBTA — Learning Platform
 Full-stack video learning platform with HLS streaming via Backblaze B2 and Cloudflare CDN, OTP-based device verification, device fingerprinting, encrypted sessions, and IP geolocation.

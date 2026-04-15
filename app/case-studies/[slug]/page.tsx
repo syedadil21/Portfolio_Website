@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { caseStudies, getCaseStudy } from "../../lib/case-studies";
+import ImageCarousel from "../../components/ImageCarousel";
 
 export function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
@@ -99,6 +100,16 @@ export default async function CaseStudyPage({
       {/* Content */}
       <div className="px-6 pb-28">
         <div className="mx-auto max-w-3xl space-y-12">
+          {/* Screenshots */}
+          {cs.images.length > 0 && (
+            <div id="screenshots" className="scroll-mt-8" />
+          )}
+          {cs.images.length > 0 && (
+            <Section title="Screenshots">
+              <ImageCarousel images={cs.images} />
+            </Section>
+          )}
+
           {/* Overview */}
           <Section title="Overview">
             <p className="text-zinc-400 leading-relaxed">{cs.overview}</p>
