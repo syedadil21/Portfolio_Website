@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react";
 
 const links = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Experience", href: "#experience" },
-  { name: "Projects", href: "#projects" },
-  { name: "Case Studies", href: "/case-studies" },
-  { name: "Skills", href: "#skills" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "#home", external: false },
+  { name: "About", href: "#about", external: false },
+  { name: "Experience", href: "#experience", external: false },
+  { name: "Projects", href: "#projects", external: false },
+  { name: "Case Studies", href: "/case-studies", external: true },
+  { name: "Skills", href: "#skills", external: false },
+  { name: "Contact", href: "#contact", external: false },
 ];
 
 export default function Navbar() {
@@ -41,9 +41,29 @@ export default function Navbar() {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm text-zinc-400 hover:text-white transition-colors duration-200 whitespace-nowrap"
+              className={`text-sm transition-colors duration-200 whitespace-nowrap inline-flex items-center gap-1 ${
+                link.external
+                  ? "text-blue-300 hover:text-blue-200"
+                  : "text-zinc-400 hover:text-white"
+              }`}
             >
               {link.name}
+              {link.external && (
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="opacity-70"
+                  aria-hidden="true"
+                >
+                  <path d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              )}
             </a>
           ))}
         </div>
@@ -109,9 +129,29 @@ export default function Navbar() {
               key={link.name}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="text-zinc-400 hover:text-white transition-colors"
+              className={`transition-colors inline-flex items-center gap-1.5 ${
+                link.external
+                  ? "text-blue-300 hover:text-blue-200"
+                  : "text-zinc-400 hover:text-white"
+              }`}
             >
               {link.name}
+              {link.external && (
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="opacity-70"
+                  aria-hidden="true"
+                >
+                  <path d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              )}
             </a>
           ))}
         </div>

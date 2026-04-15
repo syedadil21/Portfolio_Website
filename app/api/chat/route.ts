@@ -21,6 +21,7 @@ Full-stack engineer with 3+ years of experience building scalable mobile applica
 
 ## Education
 Bachelor of Science in Computer Science — National University of Computer and Emerging Sciences (FAST), Karachi, Pakistan. Jan 2021 – Dec 2024. CGPA: 3.27.
+Achievements: Dean's List (1st and 2nd semester). Student Lab Assistant (SLA) for Object Oriented Programming (3rd and 4th semester).
 Relevant coursework: DevOps, Recommender Systems, Database Management Systems, Design & Analysis of Algorithms, Software Engineering, Software Design & Analysis, Requirement Engineering.
 
 ## Technical Skills

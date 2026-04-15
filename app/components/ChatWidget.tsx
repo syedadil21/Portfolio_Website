@@ -202,13 +202,30 @@ export default function ChatWidget() {
         </div>
       </div>
 
-      {/* Floating button */}
+      {/* Floating button container */}
+      <div className="fixed bottom-6 right-6 z-50">
+        {/* Pulsing rings — only when closed */}
+        {!open && (
+          <>
+            <span className="absolute inset-0 rounded-full bg-blue-500/30 animate-chat-ping pointer-events-none" />
+            <span className="absolute inset-0 rounded-full bg-blue-400/20 animate-chat-ping-delayed pointer-events-none" />
+          </>
+        )}
+
+        {/* Sparkle badge — only when closed */}
+        {!open && (
+          <span className="absolute -top-1 -right-1 flex h-3 w-3 z-10 pointer-events-none">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-400" />
+          </span>
+        )}
+
       <button
         onClick={() => setOpen(!open)}
-        className={`fixed bottom-6 right-6 z-50 flex items-center transition-all duration-300 ${
+        className={`relative flex items-center transition-all duration-300 ${
           open
             ? "w-14 h-14 rounded-full justify-center bg-zinc-800 hover:bg-zinc-700 shadow-lg shadow-black/30"
-            : "gap-2 pl-3.5 pr-3.5 py-2.5 rounded-full bg-white/8 backdrop-blur-xl hover:bg-white/12 hover:scale-[1.03] shadow-[0_4px_20px_rgba(59,130,246,0.15),0_0_0_1px_rgba(255,255,255,0.08)] hover:shadow-[0_8px_30px_rgba(59,130,246,0.25),0_0_0_1px_rgba(255,255,255,0.12)] border border-white/20 hover:border-white/30"
+            : "gap-2 pl-3.5 pr-3.5 py-2.5 rounded-full bg-gradient-to-r from-blue-600/90 via-blue-500/90 to-violet-600/90 backdrop-blur-xl hover:from-blue-500 hover:via-blue-400 hover:to-violet-500 hover:scale-[1.05] shadow-[0_4px_24px_rgba(59,130,246,0.5),0_0_0_1px_rgba(255,255,255,0.15)] hover:shadow-[0_8px_32px_rgba(59,130,246,0.7),0_0_0_1px_rgba(255,255,255,0.25)] border border-white/30 animate-chat-bounce"
         }`}
         style={!open ? {
           transform: "perspective(800px) rotateX(2deg)",
@@ -264,6 +281,7 @@ export default function ChatWidget() {
           </>
         )}
       </button>
+      </div>
     </>
   );
 }

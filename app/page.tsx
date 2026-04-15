@@ -1,4 +1,3 @@
-import ChatWidget from "./components/ChatWidget";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -51,8 +50,6 @@ export default function Home() {
 
         <Footer />
       </div>
-
-      <ChatWidget />
     </>
   );
 }
