@@ -18,8 +18,34 @@ export default function ChatWidget() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [stickManActive, setStickManActive] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Periodically trigger the stick figure home run animation
+  useEffect(() => {
+    if (open) return;
+
+    // First trigger after 4s so user notices the button first
+    const initialTimeout = setTimeout(() => setStickManActive(true), 4000);
+
+    // Then every 18s
+    const interval = setInterval(() => {
+      setStickManActive(true);
+    }, 18000);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(interval);
+    };
+  }, [open]);
+
+  // Reset stick man after animation completes
+  useEffect(() => {
+    if (!stickManActive) return;
+    const timeout = setTimeout(() => setStickManActive(false), 4500);
+    return () => clearTimeout(timeout);
+  }, [stickManActive]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -203,9 +229,9 @@ export default function ChatWidget() {
       </div>
 
       {/* Floating button container */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className={`fixed bottom-6 right-6 z-50 ${!open && stickManActive ? "animate-screen-shake" : ""}`}>
         {/* Pulsing rings — only when closed */}
-        {!open && (
+        {!open && !stickManActive && (
           <>
             <span className="absolute inset-0 rounded-full bg-blue-500/30 animate-chat-ping pointer-events-none" />
             <span className="absolute inset-0 rounded-full bg-blue-400/20 animate-chat-ping-delayed pointer-events-none" />
@@ -213,11 +239,167 @@ export default function ChatWidget() {
         )}
 
         {/* Sparkle badge — only when closed */}
-        {!open && (
+        {!open && !stickManActive && (
           <span className="absolute -top-1 -right-1 flex h-3 w-3 z-10 pointer-events-none">
             <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
             <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-400" />
           </span>
+        )}
+
+        {/* Stick figure batter — pops up from behind-left, swings an uppercut into button */}
+        {!open && stickManActive && (
+          <>
+            {/* SVG filter definitions for bat motion blur */}
+            <svg width="0" height="0" className="absolute" aria-hidden="true">
+              <defs>
+                <filter id="bat-motion-blur" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="0" result="blurred">
+                    <animate
+                      attributeName="stdDeviation"
+                      values="0;0;0;4;4;4;0;0;0"
+                      keyTimes="0;0.18;0.28;0.35;0.42;0.5;0.6;0.8;1"
+                      dur="4.5s"
+                      fill="freeze"
+                    />
+                  </feGaussianBlur>
+                </filter>
+              </defs>
+            </svg>
+
+            <svg
+              width="90"
+              height="120"
+              viewBox="10 -10 90 120"
+              className="absolute -bottom-4 -left-20 pointer-events-none animate-stickman"
+              aria-hidden="true"
+              style={{ zIndex: 1 }}
+            >
+              {/* Head */}
+              <circle cx="30" cy="20" r="9" stroke="white" strokeWidth="2.5" fill="none" />
+              {/* Body */}
+              <line x1="30" y1="29" x2="30" y2="68" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+              {/* Legs — wider stance */}
+              <line x1="30" y1="68" x2="18" y2="95" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+              <line x1="30" y1="68" x2="42" y2="95" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+              {/* Back arm (resting against body) */}
+              <line x1="30" y1="40" x2="22" y2="55" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+
+              {/* Swinging arm + bat — with motion blur filter */}
+              <g
+                className="animate-stickman-swing"
+                style={{ transformOrigin: "30px 40px", filter: "url(#bat-motion-blur)" }}
+              >
+                <line x1="30" y1="40" x2="42" y2="58" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+                <line x1="42" y1="58" x2="48" y2="66" stroke="#6b4423" strokeWidth="4.5" strokeLinecap="round" />
+                <line x1="48" y1="66" x2="68" y2="88" stroke="#a16207" strokeWidth="7" strokeLinecap="round" />
+              </g>
+            </svg>
+
+            {/* Impact flash — bursts at bottom of button where bat connects */}
+            <div className="absolute inset-0 rounded-full pointer-events-none animate-impact-flash" style={{ zIndex: 2 }} />
+
+            {/* POW lines — radiating from impact point */}
+            <svg
+              width="120"
+              height="120"
+              viewBox="0 0 120 120"
+              className="absolute left-1/2 -translate-x-1/2 -bottom-6 pointer-events-none animate-impact-lines"
+              aria-hidden="true"
+              style={{ zIndex: 2 }}
+            >
+              <g stroke="#fbbf24" strokeWidth="3" strokeLinecap="round" fill="none">
+                <line x1="60" y1="20" x2="60" y2="5" />
+                <line x1="20" y1="40" x2="5" y2="30" />
+                <line x1="100" y1="40" x2="115" y2="30" />
+                <line x1="15" y1="60" x2="0" y2="60" />
+                <line x1="105" y1="60" x2="120" y2="60" />
+                <line x1="25" y1="85" x2="10" y2="95" />
+                <line x1="95" y1="85" x2="110" y2="95" />
+                <line x1="60" y1="95" x2="60" y2="115" />
+              </g>
+            </svg>
+
+            {/* Debris particles — burst outward at impact */}
+            <div
+              className="absolute left-1/2 top-1/2 pointer-events-none"
+              style={{ zIndex: 3, transform: "translate(-50%, -50%)" }}
+              aria-hidden="true"
+            >
+              {[
+                { angle: 0, distance: 80, delay: 0 },
+                { angle: 45, distance: 70, delay: 0.02 },
+                { angle: 90, distance: 90, delay: 0 },
+                { angle: 135, distance: 75, delay: 0.03 },
+                { angle: 180, distance: 85, delay: 0.01 },
+                { angle: 225, distance: 65, delay: 0.04 },
+                { angle: 270, distance: 80, delay: 0.02 },
+                { angle: 315, distance: 72, delay: 0 },
+                { angle: 20, distance: 95, delay: 0.05 },
+                { angle: 160, distance: 100, delay: 0.03 },
+                { angle: 200, distance: 88, delay: 0.04 },
+                { angle: 340, distance: 92, delay: 0.02 },
+              ].map((p, i) => {
+                const rad = (p.angle * Math.PI) / 180;
+                const x = Math.cos(rad) * p.distance;
+                const y = Math.sin(rad) * p.distance;
+                const size = 4 + (i % 3);
+                const colors = ["#fbbf24", "#60a5fa", "#a78bfa", "#ffffff"];
+                return (
+                  <span
+                    key={i}
+                    className="absolute block rounded-full animate-debris"
+                    style={
+                      {
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        background: colors[i % colors.length],
+                        boxShadow: `0 0 8px ${colors[i % colors.length]}`,
+                        "--debris-x": `${x}px`,
+                        "--debris-y": `${y}px`,
+                        animationDelay: `${p.delay}s`,
+                      } as React.CSSProperties
+                    }
+                  />
+                );
+              })}
+            </div>
+
+            {/* Motion trail — blue ghost copies of the button that fade behind it */}
+            <div
+              className="absolute inset-0 rounded-full pointer-events-none animate-button-trail-1 bg-gradient-to-r from-blue-600/50 via-blue-500/50 to-violet-600/50"
+              style={{ zIndex: 0 }}
+              aria-hidden="true"
+            />
+            <div
+              className="absolute inset-0 rounded-full pointer-events-none animate-button-trail-2 bg-gradient-to-r from-blue-600/30 via-blue-500/30 to-violet-600/30"
+              style={{ zIndex: 0 }}
+              aria-hidden="true"
+            />
+            <div
+              className="absolute inset-0 rounded-full pointer-events-none animate-button-trail-3 bg-gradient-to-r from-blue-600/20 via-blue-500/20 to-violet-600/20"
+              style={{ zIndex: 0 }}
+              aria-hidden="true"
+            />
+
+            {/* Speed lines — trailing streaks as button flies up */}
+            <svg
+              width="80"
+              height="140"
+              viewBox="0 0 80 140"
+              className="absolute left-1/2 -translate-x-1/2 -top-36 pointer-events-none animate-speed-lines"
+              aria-hidden="true"
+              style={{ zIndex: 1 }}
+            >
+              <g stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.7">
+                <line x1="20" y1="0" x2="20" y2="30" />
+                <line x1="35" y1="10" x2="35" y2="50" />
+                <line x1="50" y1="0" x2="50" y2="35" />
+                <line x1="60" y1="15" x2="60" y2="55" />
+                <line x1="15" y1="20" x2="15" y2="60" />
+                <line x1="45" y1="25" x2="45" y2="70" />
+              </g>
+            </svg>
+          </>
         )}
 
       <button
@@ -225,7 +407,9 @@ export default function ChatWidget() {
         className={`relative flex items-center transition-all duration-300 ${
           open
             ? "w-14 h-14 rounded-full justify-center bg-zinc-800 hover:bg-zinc-700 shadow-lg shadow-black/30"
-            : "gap-2 pl-3.5 pr-3.5 py-2.5 rounded-full bg-gradient-to-r from-blue-600/90 via-blue-500/90 to-violet-600/90 backdrop-blur-xl hover:from-blue-500 hover:via-blue-400 hover:to-violet-500 hover:scale-[1.05] shadow-[0_4px_24px_rgba(59,130,246,0.5),0_0_0_1px_rgba(255,255,255,0.15)] hover:shadow-[0_8px_32px_rgba(59,130,246,0.7),0_0_0_1px_rgba(255,255,255,0.25)] border border-white/30 animate-chat-bounce"
+            : `gap-2 pl-3.5 pr-3.5 py-2.5 rounded-full bg-gradient-to-r from-blue-600/90 via-blue-500/90 to-violet-600/90 backdrop-blur-xl hover:from-blue-500 hover:via-blue-400 hover:to-violet-500 hover:scale-[1.05] shadow-[0_4px_24px_rgba(59,130,246,0.5),0_0_0_1px_rgba(255,255,255,0.15)] hover:shadow-[0_8px_32px_rgba(59,130,246,0.7),0_0_0_1px_rgba(255,255,255,0.25)] border border-white/30 ${
+                stickManActive ? "animate-chat-homerun" : "animate-chat-bounce"
+              }`
         }`}
         style={!open ? {
           transform: "perspective(800px) rotateX(2deg)",

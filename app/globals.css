@@ -158,6 +158,283 @@ body {
   animation-delay: 1s;
 }
 
+/*
+ * UPPERCUT HOMERUN ANIMATION (4.5s total)
+ *
+ *   0% - 18%  Stick figure rises smoothly from below, eases into stance
+ *  18% - 30%  Windup — bat drifts backward/downward (counter-clockwise)
+ *  30% - 42%  UPPERCUT SWING — bat sweeps forward+up in a single arc
+ *             impact exactly at 42%
+ *  42% - 55%  Follow-through — bat continues rotating to finish pose
+ *  42% - 60%  Button squashes, then launches STRAIGHT UP to mid-screen
+ *  60% - 78%  Peak hang + apex spin
+ *  78% - 92%  Falls back down with gravity easing
+ *  92% - 97%  Bounce landing squash
+ *  85% -100%  Stick figure eases down below viewport, fades
+ */
+
+/* Stick figure slides up from behind the button */
+@keyframes stickmanAppear {
+  0%   { transform: translateY(100px) scale(0.8); opacity: 0; }
+  18%  { transform: translateY(0)     scale(1);   opacity: 1; }
+  85%  { transform: translateY(0)     scale(1);   opacity: 1; }
+  100% { transform: translateY(100px) scale(0.8); opacity: 0; }
+}
+
+.animate-stickman {
+  animation: stickmanAppear 4.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/*
+ * Bat swing — counter-clockwise uppercut.
+ * Bat starts hanging down-forward (0deg).
+ * Negative rotation = counter-clockwise in SVG (CSS transform on g).
+ * Windup: bat drifts slightly down/back  → -25deg.
+ * Swing up: sweeps around to -200deg passing through the button (at ~-120deg at 42%).
+ * Follow-through continues to -260deg (bat over the shoulder).
+ */
+@keyframes stickmanSwing {
+  0%, 18%  { transform: rotate(0deg); }
+  /* Windup — slight back/down pull */
+  30%      { transform: rotate(-25deg); }
+  /* UPPERCUT — smooth sweep, contact at ~42% when bat is at the button's position */
+  42%      { transform: rotate(-25deg); }
+  /* Follow-through — bat continues over the shoulder */
+  /* 55%      { transform: rotate(-230deg); } */
+  /* Hold finish pose */
+  80%      { transform: rotate(-120deg); }
+  /* Return to rest on the way down */
+  100%     { transform: rotate(0deg); }
+}
+
+.animate-stickman-swing {
+  animation: stickmanSwing 4.5s ease-in-out forwards;
+}
+
+/* Impact flash — white burst exactly at contact (42%) */
+@keyframes impactFlash {
+  0%, 40%  { opacity: 0; transform: scale(0.6); background: radial-gradient(circle, rgba(255,255,255,0.95), transparent 65%); }
+  42%      { opacity: 1; transform: scale(1.7); background: radial-gradient(circle, rgba(255,255,255,0.95), transparent 65%); }
+  48%      { opacity: 0; transform: scale(2.2); background: radial-gradient(circle, rgba(255,255,255,0.95), transparent 65%); }
+  100%     { opacity: 0; }
+}
+
+.animate-impact-flash {
+  animation: impactFlash 4.5s ease-out forwards;
+}
+
+/* POW lines — radiate at impact */
+@keyframes impactLines {
+  0%, 40%  { opacity: 0; transform: translate(-50%, 0) scale(0.3); }
+  42%      { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  52%      { opacity: 1; transform: translate(-50%, 0) scale(1.25); }
+  60%      { opacity: 0; transform: translate(-50%, 0) scale(1.4); }
+  100%     { opacity: 0; transform: translate(-50%, 0) scale(1.4); }
+}
+
+.animate-impact-lines {
+  animation: impactLines 4.5s ease-out forwards;
+}
+
+/*
+ * Button launches STRAIGHT UP (no lateral drift) since the hit is from below.
+ * Slight compression at contact, then smooth high arc with gravity-like easing.
+ */
+@keyframes chatHomerun {
+  /* Rest while stick figure rises and winds up */
+  0%, 40% {
+    transform: perspective(800px) rotateX(2deg) translate(0, 0) rotate(0deg) scale(1);
+  }
+  /* CONTACT — vertical squash (hit from below) */
+  42% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -4px) rotate(-8deg) scale(1.12, 0.82);
+  }
+  /* Leaving the ground, picking up spin */
+  48% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -18vh) rotate(180deg) scale(1);
+  }
+  /* Rising fast toward apex */
+  58% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -48vh) rotate(540deg) scale(1);
+  }
+  /* Apex hang */
+  68% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -50vh) rotate(720deg) scale(1);
+  }
+  /* Falling with gravity */
+  85% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -10vh) rotate(1080deg) scale(1);
+  }
+  /* Just before landing */
+  92% {
+    transform: perspective(800px) rotateX(2deg) translate(0, 2px) rotate(1260deg) scale(1);
+  }
+  /* Landing squash */
+  95% {
+    transform: perspective(800px) rotateX(2deg) translate(0, 0) rotate(1260deg) scale(1.1, 0.85);
+  }
+  /* Small rebound */
+  98% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -4px) rotate(1260deg) scale(0.97, 1.03);
+  }
+  100% {
+    transform: perspective(800px) rotateX(2deg) translate(0, 0) rotate(1260deg) scale(1);
+  }
+}
+
+.animate-chat-homerun {
+  animation: chatHomerun 4.5s cubic-bezier(0.22, 0.72, 0.3, 1) forwards;
+}
+
+/* === EXTRAS: debris, motion trail, speed lines, screen shake === */
+
+/* Debris particles — burst outward at impact (42%) and fall with gravity */
+@keyframes debrisBurst {
+  0%, 40% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  43% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  55% {
+    transform: translate(var(--debris-x), var(--debris-y)) scale(1);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(var(--debris-x), calc(var(--debris-y) + 40px)) scale(0.7);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(var(--debris-x), calc(var(--debris-y) + 80px)) scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-debris {
+  animation: debrisBurst 4.5s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+/* Motion trails — delayed ghost copies of the button as it launches */
+@keyframes buttonTrail1 {
+  0%, 42% {
+    transform: perspective(800px) rotateX(2deg) translate(0, 0) scale(1);
+    opacity: 0;
+  }
+  44% {
+    opacity: 0.5;
+  }
+  48% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -18vh);
+    opacity: 0.35;
+  }
+  58% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -48vh);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes buttonTrail2 {
+  0%, 44% {
+    transform: perspective(800px) rotateX(2deg) translate(0, 0) scale(1);
+    opacity: 0;
+  }
+  46% {
+    opacity: 0.35;
+  }
+  50% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -18vh);
+    opacity: 0.2;
+  }
+  58% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -42vh);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes buttonTrail3 {
+  0%, 46% {
+    transform: perspective(800px) rotateX(2deg) translate(0, 0) scale(1);
+    opacity: 0;
+  }
+  48% {
+    opacity: 0.25;
+  }
+  52% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -16vh);
+    opacity: 0.12;
+  }
+  58% {
+    transform: perspective(800px) rotateX(2deg) translate(0, -36vh);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-button-trail-1 {
+  animation: buttonTrail1 4.5s cubic-bezier(0.22, 0.72, 0.3, 1) forwards;
+  filter: blur(4px);
+}
+.animate-button-trail-2 {
+  animation: buttonTrail2 4.5s cubic-bezier(0.22, 0.72, 0.3, 1) forwards;
+  filter: blur(6px);
+}
+.animate-button-trail-3 {
+  animation: buttonTrail3 4.5s cubic-bezier(0.22, 0.72, 0.3, 1) forwards;
+  filter: blur(8px);
+}
+
+/* Speed lines — streaks that trail the button as it flies up */
+@keyframes speedLines {
+  0%, 42% {
+    opacity: 0;
+    transform: translate(-50%, 30px);
+  }
+  48% {
+    opacity: 1;
+    transform: translate(-50%, -10vh);
+  }
+  60% {
+    opacity: 0.6;
+    transform: translate(-50%, -40vh);
+  }
+  70% {
+    opacity: 0;
+    transform: translate(-50%, -48vh);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-speed-lines {
+  animation: speedLines 4.5s cubic-bezier(0.22, 0.72, 0.3, 1) forwards;
+}
+
+/* Screen shake — brief jolt at impact (42% of 4.5s = 1.89s in) */
+@keyframes screenShake {
+  0%, 41% { transform: translate(0, 0); }
+  42% { transform: translate(-3px, 2px); }
+  43% { transform: translate(3px, -2px); }
+  44% { transform: translate(-4px, -1px); }
+  45% { transform: translate(2px, 3px); }
+  46% { transform: translate(-2px, -3px); }
+  47% { transform: translate(3px, 1px); }
+  48% { transform: translate(-1px, 2px); }
+  49%, 100% { transform: translate(0, 0); }
+}
+
+.animate-screen-shake {
+  animation: screenShake 4.5s linear forwards;
+}
+
 /* Hide scrollbar but keep scroll functionality */
 .scrollbar-hide {
   -ms-overflow-style: none;
