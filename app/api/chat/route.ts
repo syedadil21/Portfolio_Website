@@ -1,3 +1,33 @@
+import { caseStudies } from "../../lib/case-studies";
+
+function buildCaseStudiesSection(): string {
+  return caseStudies
+    .map((cs) => {
+      const problems = cs.problem.map((p) => `  - ${p}`).join("\n");
+      const solutions = cs.solution.map((s) => `  - ${s}`).join("\n");
+      const features = cs.features.map((f) => `  - ${f}`).join("\n");
+      const outcomes = cs.outcome.map((o) => `  - ${o}`).join("\n");
+      return `### ${cs.title} — Case Study
+Subtitle: ${cs.subtitle}
+Overview: ${cs.overview}
+Stack: ${cs.stack.join(", ")}
+My Role: ${cs.role}
+
+Problems solved:
+${problems}
+
+Solutions implemented:
+${solutions}
+
+Key features:
+${features}
+
+Outcomes:
+${outcomes}`;
+    })
+    .join("\n\n");
+}
+
 const SYSTEM_PROMPT = `You are Syed Adil's portfolio assistant. You answer questions about Syed Adil on behalf of him. Be friendly and professional.
 
 IMPORTANT RULES:
@@ -83,7 +113,12 @@ Stack: React Native, Next.js, ASP.NET Core, SQL Server, Dapper, OneSignal, Azure
 
 ### Bento — AI-Powered Recipe App
 Food recipe app with AI assistant. Implemented Wi-Fi provisioning over Bluetooth to configure ESP-32 hardware.
-Stack: React Native (Expo), ESP-32`;
+Stack: React Native (Expo), ESP-32
+
+## Detailed Case Studies
+These are in-depth breakdowns of select projects — the problems they solved, the technical solutions, the features, and the outcomes. Use these details when someone asks deeper questions about a specific project.
+
+${buildCaseStudiesSection()}`;
 
 export async function POST(request: Request) {
   try {
