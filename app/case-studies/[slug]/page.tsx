@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { caseStudies, getCaseStudy } from "../../lib/case-studies";
 import ImageCarousel from "../../components/ImageCarousel";
+import FadeIn from "../../components/FadeIn";
 
 export function generateStaticParams() {
   return caseStudies.map((cs) => ({ slug: cs.slug }));
@@ -40,6 +41,7 @@ export default async function CaseStudyPage({
   return (
     <div className="min-h-screen">
       {/* Header */}
+      <FadeIn>
       <div className="pt-32 pb-12 px-6">
         <div className="mx-auto max-w-3xl">
           <Link
@@ -96,8 +98,10 @@ export default async function CaseStudyPage({
           </div>
         </div>
       </div>
+      </FadeIn>
 
       {/* Content */}
+      <FadeIn delay={0.15}>
       <div className="px-6 pb-28">
         <div className="mx-auto max-w-3xl space-y-12">
           {/* Screenshots */}
@@ -193,6 +197,7 @@ export default async function CaseStudyPage({
           </div>
         </div>
       </div>
+      </FadeIn>
     </div>
   );
 }

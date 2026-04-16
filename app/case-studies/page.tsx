@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { caseStudies } from "../lib/case-studies";
+import FadeIn from "../components/FadeIn";
 
 export const metadata: Metadata = {
   title: "Case Studies — Syed Adil",
@@ -18,6 +19,7 @@ export default function CaseStudiesPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
+      <FadeIn>
       <div className="pt-32 pb-16 px-6">
         <div className="mx-auto max-w-5xl">
           <Link
@@ -45,8 +47,10 @@ export default function CaseStudiesPage() {
           </p>
         </div>
       </div>
+      </FadeIn>
 
       {/* Case study cards */}
+      <FadeIn delay={0.15}>
       <div className="px-6 pb-28">
         <div className="mx-auto max-w-5xl space-y-6">
           {caseStudies.map((cs) => (
@@ -119,6 +123,7 @@ export default function CaseStudiesPage() {
           ))}
         </div>
       </div>
+      </FadeIn>
     </div>
   );
 }

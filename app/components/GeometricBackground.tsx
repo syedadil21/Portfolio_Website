@@ -92,7 +92,7 @@ function Terrain() {
     const z = zoomRef.current;
 
     // Camera position: starts close (z=4), eases out to z=7
-    const camZ = 4 + z * 3;
+    const camZ = 2 + z * 2.5;
     state.camera.position.z = camZ;
     state.camera.updateProjectionMatrix();
 
@@ -160,9 +160,9 @@ function Terrain() {
       {/* Mouse-following spotlight */}
       <pointLight
         ref={spotRef}
-        intensity={90}
-        distance={40}
-        decay={0.8}
+        intensity={40}
+        distance={10}
+        decay={0.9}
         color="#c0d0e8"
       />
 

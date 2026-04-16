@@ -21,24 +21,30 @@ export default function Home() {
           <About />
         </FadeIn>
 
-        <Experience />
+        <FadeIn delay={0.1}>
+          <Experience />
+        </FadeIn>
 
-        <Projects />
+        <FadeIn delay={0.1}>
+          <Projects />
+        </FadeIn>
 
-        <Skills />
+        <FadeIn delay={0.1}>
+          <Skills />
+        </FadeIn>
 
-        <FadeIn>
+        <FadeIn delay={0.1}>
           <Education />
         </FadeIn>
 
-        {/* <Certifications /> */}
-
-        <FadeIn>
+        <FadeIn delay={0.1}>
           <Contact />
         </FadeIn>
       </main>
 
-      <Footer />
+      <FadeIn>
+        <Footer />
+      </FadeIn>
     </>
   );
 }
