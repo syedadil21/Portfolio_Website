@@ -96,8 +96,18 @@ function Terrain() {
     state.camera.position.z = camZ;
     state.camera.updateProjectionMatrix();
 
+    // Mouse-driven perspective shift on the mesh
     const mesh = meshRef.current;
     if (mesh) {
+      // Tilt: base -0.75, mouse Y adds ±0.3 (up=flatter, down=steeper)
+      const targetRotX = -0.75 + m.sy * 0.3;
+      // Rotate: base 0.04, mouse X adds ±0.2 (right=clockwise, left=counter-clockwise)
+      const targetRotY = 0.04 + m.sx * 0.2;
+
+      // Smooth interpolation
+      mesh.rotation.x += (targetRotX - mesh.rotation.x) * 2.5 * delta;
+      mesh.rotation.y += (targetRotY - mesh.rotation.y) * 2.5 * delta;
+
       const pos = mesh.geometry.attributes.position;
       const t = performance.now() * 0.001;
       for (let i = 0; i < pos.count; i++) {
