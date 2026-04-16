@@ -38,13 +38,15 @@ function Terrain() {
   const meshRef = useRef<THREE.Mesh>(null);
   const spotRef = useRef<THREE.PointLight>(null);
   const { camera } = useThree();
-  const mouseRef = useRef({ x: 0, y: 0, sx: 0, sy: 0 });
+  const mouseRef = useRef({ x: 0, y: 0, sx: 0, sy: 0, hasMoved: false });
   const raycaster = useMemo(() => new THREE.Raycaster(), []);
   const mouseVec = useMemo(() => new THREE.Vector2(), []);
+  const zoomRef = useRef(0); // 0 = zoomed in, 1 = zoomed out
 
   const onMove = useCallback((e: MouseEvent) => {
     mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    mouseRef.current.hasMoved = true;
   }, []);
 
   useEffect(() => {
@@ -78,11 +80,21 @@ function Terrain() {
     return { geometry: geo, baseZ: bz };
   }, []);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const m = mouseRef.current;
     // Smooth mouse
     m.sx += (m.x - m.sx) * 3 * delta;
     m.sy += (m.y - m.sy) * 3 * delta;
+
+    // Smooth zoom transition: zoomed in (0) → zoomed out (1)
+    const zoomTarget = m.hasMoved ? 1 : 0;
+    zoomRef.current += (zoomTarget - zoomRef.current) * 1.2 * delta;
+    const z = zoomRef.current;
+
+    // Camera position: starts close (z=4), eases out to z=7
+    const camZ = 4 + z * 3;
+    state.camera.position.z = camZ;
+    state.camera.updateProjectionMatrix();
 
     const mesh = meshRef.current;
     if (mesh) {
@@ -91,10 +103,12 @@ function Terrain() {
       for (let i = 0; i < pos.count; i++) {
         const x = pos.getX(i);
         const y = pos.getY(i);
+        // Stronger ripple waves
         const wave =
-          Math.sin(t * 0.7 + x * 0.5 + y * 0.35) * 0.07 +
-          Math.sin(t * 1.1 - x * 0.3 + y * 0.7) * 0.05 +
-          Math.cos(t * 0.5 + x * 0.2 - y * 0.4) * 0.035;
+          Math.sin(t * 1.0 + x * 0.6 + y * 0.4) * 0.14 +
+          Math.sin(t * 1.5 - x * 0.4 + y * 0.9) * 0.10 +
+          Math.cos(t * 0.7 + x * 0.25 - y * 0.5) * 0.07 +
+          Math.sin(t * 2.0 + x * 1.2 + y * 0.3) * 0.04;
         pos.setZ(i, baseZ[i] + wave);
       }
       pos.needsUpdate = true;
@@ -130,23 +144,30 @@ function Terrain() {
 
   return (
     <>
-      {/* Ambient — lifts unlit areas so terrain is always visible */}
-      <ambientLight intensity={0.25} color="#334466" />
+      {/* Ambient — base brightness for all unlit areas */}
+      <ambientLight intensity={0.55} color="#334466" />
 
-      {/* Mouse-following spotlight — wider spread */}
+      {/* Mouse-following spotlight */}
       <pointLight
         ref={spotRef}
-        intensity={60}
-        distance={20}
-        decay={1.3}
+        intensity={90}
+        distance={40}
+        decay={0.8}
         color="#c0d0e8"
       />
 
-      {/* Overhead fill for overall visibility */}
+      {/* Overhead fill — lights the whole terrain evenly */}
       <directionalLight
-        intensity={0.35}
+        intensity={0.60}
         position={[3, 5, 8]}
         color="#556688"
+      />
+
+      {/* Back fill from opposite side — prevents dark corners */}
+      <directionalLight
+        intensity={0.90}
+        position={[-5, -3, 6]}
+        color="#445577"
       />
 
       <mesh
@@ -157,6 +178,8 @@ function Terrain() {
       >
         <meshStandardMaterial
           color="#1c2840"
+          emissive="#0d1520"
+          emissiveIntensity={0.8}
           roughness={0.55}
           metalness={0.45}
           flatShading
