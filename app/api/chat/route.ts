@@ -111,9 +111,9 @@ Stack: ASP.NET, jQuery, SQL Server, Azure DevOps
 Community voting app with mobile and web clients. Secure issue-based voting, role-based access, Redux Toolkit/RTK Query state management, push notifications via OneSignal, deployed on Azure.
 Stack: React Native, Next.js, ASP.NET Core, SQL Server, Dapper, OneSignal, Azure, Docker
 
-### Bento — AI-Powered Recipe App
-Food recipe app with AI assistant. Implemented Wi-Fi provisioning over Bluetooth to configure ESP-32 hardware.
-Stack: React Native (Expo), ESP-32
+### Bento — AI-Powered Recipe App (Team Project)
+Food recipe app with AI voice assistant (ElevenLabs on ESP-32). Built a real-time voice visualizer with animated halo responding to microphone decibel levels at 60fps using Reanimated + Audio API. Implemented Wi-Fi provisioning over Bluetooth for ESP-32 hardware configuration. Contributed to UI redesign. Note: I did not build the ElevenLabs voice agent — that was a team member's work.
+Stack: React Native (Expo), Reanimated, Audio API, ESP-32, Bluetooth
 
 ## Detailed Case Studies
 These are in-depth breakdowns of select projects — the problems they solved, the technical solutions, the features, and the outcomes. Use these details when someone asks deeper questions about a specific project.

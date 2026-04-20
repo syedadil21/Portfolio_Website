@@ -122,8 +122,8 @@ const projects = [
     hasImages: false,
     category: "AI" as Category,
     description:
-      "Food recipe app with an AI-powered assistant. Implemented Wi-Fi provisioning over Bluetooth to configure ESP-32 hardware via the mobile app.",
-    tags: ["React Native", "Expo", "ESP-32"],
+      "Food recipe app with an AI assistant (ESP-32 hardware). Built a real-time voice visualizer with animated halo that responds to microphone decibel levels at 60fps using Reanimated. Implemented Wi-Fi provisioning over Bluetooth to configure ESP-32 hardware. Contributed to UI redesign.",
+    tags: ["React Native", "Expo", "Reanimated", "Audio API", "ESP-32", "Bluetooth"],
     github: "",
     live: "",
     isOpenSource: false,
