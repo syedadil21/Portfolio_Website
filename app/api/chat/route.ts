@@ -100,8 +100,8 @@ Cross-platform grocery app — React Native mobile with multi-vendor carts, cros
 Stack: React Native (Expo), ASP.NET Core, Next.js, SQL Server, Entity Framework, GraphQL (HotChocolate), SignalR, JWT
 
 ### FBTA — Learning Platform
-Full-stack video learning platform with HLS streaming via Backblaze B2 and Cloudflare CDN, OTP-based device verification, device fingerprinting, encrypted sessions, and IP geolocation.
-Stack: Next.js, Fastify, Node.js, PostgreSQL, Knex.js, AWS S3, TypeScript, Docker
+Full-stack video learning platform. Originally built custom video infrastructure with HLS streaming via Backblaze B2 and Cloudflare CDN, presigned URLs, and custom device fingerprinting. Migrated to VdoCipher for hardware-level DRM (Widevine/FairPlay) to prevent screen recording and screenshots — stronger than what custom software solutions could achieve. Retained custom security layers: OTP-based device verification, device fingerprinting, stream locking, encrypted sessions, and IP geolocation. I made the VdoCipher integration decision and led the migration.
+Stack: Next.js, Fastify, Node.js, PostgreSQL, Knex.js, VdoCipher, DRM, Redis, Socket.IO, TypeScript, Docker
 
 ### HARVEST — Grant Management Software
 Maintained and enhanced a US-based grant management software for educational institutions. Developed new features, optimized controllers and views.
@@ -112,8 +112,8 @@ Community voting app with mobile and web clients. Secure issue-based voting, rol
 Stack: React Native, Next.js, ASP.NET Core, SQL Server, Dapper, OneSignal, Azure, Docker
 
 ### Bento — AI-Powered Recipe App (Team Project)
-Food recipe app with AI voice assistant (ElevenLabs on ESP-32). Built a real-time voice visualizer with animated halo responding to microphone decibel levels at 60fps using Reanimated + Audio API. Implemented Wi-Fi provisioning over Bluetooth for ESP-32 hardware configuration. Contributed to UI redesign. Note: I did not build the ElevenLabs voice agent — that was a team member's work.
-Stack: React Native (Expo), Reanimated, Audio API, ESP-32, Bluetooth
+Food recipe app with AI voice assistant (ElevenLabs on ESP-32). Designed a swipe-based ingredient confirmation flow — users photograph fridge/pantry items, the app scans and identifies ingredients with quantities, then users swipe right (confirm) or left (reject) each item to manage inventory without manual data entry. Built a real-time voice visualizer with animated halo responding to microphone decibel levels at 60fps using Reanimated + Audio API. Implemented Wi-Fi provisioning over Bluetooth for ESP-32 hardware configuration. Contributed to UI redesign. Note: I did not build the ElevenLabs voice agent — that was a team member's work.
+Stack: React Native (Expo), Reanimated, Audio API, Image Recognition, ESP-32, Bluetooth
 
 ## Detailed Case Studies
 These are in-depth breakdowns of select projects — the problems they solved, the technical solutions, the features, and the outcomes. Use these details when someone asks deeper questions about a specific project.

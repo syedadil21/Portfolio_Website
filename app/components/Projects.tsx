@@ -9,7 +9,7 @@ const projects = [
   {
     title: "AI Analytics Module",
     caseStudy: "ai-analytics-module",
-    hasImages: false,
+    hasImages: true,
     category: "AI" as Category,
     description:
       "Built a production-grade AI-powered analytics layer inside an orthodontic patient management system. Users can query operational and financial data in plain English. Implemented dynamic PostgreSQL schema introspection to ground GPT-4o in real table names, enum values, and relationships — eliminating LLM hallucinations. Added SELECT-only validation and read-only DB connections for safe production execution. Integrated GA4 for marketing attribution and built real-time dashboards with 12+ report types.",
@@ -66,14 +66,15 @@ const projects = [
     hasImages: true,
     category: "Web" as Category,
     description:
-      "Full-stack video learning platform with multi-layer content security: presigned URLs with 10-minute expiry via Backblaze B2, OTP-based device verification with SHA-256 fingerprinting (max 2 trusted devices), single concurrent stream enforcement with Redis locking, video watermarking with DevTools detection, sodium-encrypted sessions with MaxMind IP geolocation, and a real-time admin dashboard for session monitoring via Socket.IO.",
+      "Full-stack video learning platform. Originally built custom video infrastructure with HLS streaming via Backblaze B2, Cloudflare CDN, and presigned URLs. Migrated to VdoCipher for hardware-level DRM (Widevine/FairPlay) to prevent screen recording and screenshots. Retained custom security layers: OTP-based device verification with SHA-256 fingerprinting (max 2 trusted devices), single concurrent stream enforcement with Redis locking, video watermarking, DevTools detection, sodium-encrypted sessions with MaxMind IP geolocation, and a real-time admin dashboard via Socket.IO.",
     tags: [
       "Next.js",
       "Fastify",
       "Node.js",
       "PostgreSQL",
+      "VdoCipher",
+      "DRM",
       "Knex.js",
-      "Backblaze B2",
       "Redis",
       "Socket.IO",
       "TypeScript",
@@ -119,11 +120,11 @@ const projects = [
   {
     title: "Bento — AI-Powered Recipe App",
     caseStudy: "bento",
-    hasImages: false,
+    hasImages: true,
     category: "AI" as Category,
     description:
-      "Food recipe app with an AI assistant (ESP-32 hardware). Built a real-time voice visualizer with animated halo that responds to microphone decibel levels at 60fps using Reanimated. Implemented Wi-Fi provisioning over Bluetooth to configure ESP-32 hardware. Contributed to UI redesign.",
-    tags: ["React Native", "Expo", "Reanimated", "Audio API", "ESP-32", "Bluetooth"],
+      "Food recipe app with an AI assistant (ESP-32 hardware). Designed a swipe-based ingredient confirmation flow — scan fridge items with the camera, then swipe right/left on detected ingredients to manage inventory. Built a real-time voice visualizer with animated halo at 60fps using Reanimated. Implemented Wi-Fi provisioning over Bluetooth to configure ESP-32 hardware. Contributed to UI redesign.",
+    tags: ["React Native", "Expo", "Reanimated", "Audio API", "Image Recognition", "ESP-32", "Bluetooth"],
     github: "",
     live: "",
     isOpenSource: false,

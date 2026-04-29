@@ -104,12 +104,12 @@ export default async function CaseStudyPage({
       <FadeIn delay={0.15}>
       <div className="px-6 pb-28">
         <div className="mx-auto max-w-3xl space-y-12">
-          {/* Screenshots */}
+          {/* Screenshots & Demos */}
           {cs.images.length > 0 && (
             <div id="screenshots" className="scroll-mt-8" />
           )}
           {cs.images.length > 0 && (
-            <Section title="Screenshots">
+            <Section title={cs.images.some(img => /\.(mov|mp4|webm|ogg)$/i.test(img.src)) ? "Screenshots & Demos" : "Screenshots"}>
               <ImageCarousel images={cs.images} />
             </Section>
           )}
